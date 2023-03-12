@@ -21,29 +21,29 @@ $(function () {
   //
   // TODO: Add code to display the current date in the header of the page.
 
-  
+
   // This is displaying the current date on the webpage and a variable for the current time was set.
   var today = dayjs();
   $('#currentDay').text(today.format("MMMM DD, YYYY"));
-  var currentTime = dayjs().format("TT");
+  var currentTime = dayjs().format("HH");
 
   // setting up variables for each time block
 
-  var time9am = $('#9am');
-  var time10am = $('#10am');
-  var time11am = $('#11am');
-  var time12pm = $('#12pm');
-  var time1pm = $('#13pm');
-  var time2pm = $('#14pm');
-  var time3pm = $('#15pm');
-  var time4pm = $('#16pm');
-  var time5pm = $('#17pm');
-  var time6pm = $('#18pm');
-  var time7pm = $('#19pm');
-  var time8pm = $('#20pm');
+  var time9am = $('#hour-9');
+  var time10am = $('#hour-10');
+  var time11am = $('#hour-11');
+  var time12pm = $('#hour-12');
+  var time1pm = $('#hour-13');
+  var time2pm = $('#hour-14');
+  var time3pm = $('#hour-15');
+  var time4pm = $('#hour-16');
+  var time5pm = $('#hour-17');
+  var time6pm = $('#hour-18');
+  var time7pm = $('#hour-19');
+  var time8pm = $('#hour-20');
 
   // Make an array so loop can be ran for "past, present, future"
-  var timeArray = [
+  var allTimes = [
     time9am,
     time10am,
     time11am,
@@ -58,17 +58,33 @@ $(function () {
     time8pm,
   ];
 
+  for (var i = 0; i < allTimes.length; i++) {
+    if (currentTime > allTimes[i].attr("id").split("-")[1]) {
+      allTimes[i].addClass("past");
+
+    } else if (currentTime < allTimes[i].attr("id").split("-")[1]) {
+      allTimes[i].addClass("future");
+
+    } else {
+      allTimes[i].addClass("present");
+    }
+
+    $("text-" +(i+9)).val(localStorage.getItem("time-" +(i+9)))
+  }
   
   // var description = document.getElementById('col-8 col-md-10 description');
   // var saveButton = document.getElementById('btn saveBtn col-2 col-md-1');
 
 
-  // function saveToLocalStorage () {
-  //   var userInput = document.getElementById('col-8 col-md-10 description').value;
-  //   localStorage.setItem("userInput", userInput);
-  // }
+  function saveToLocalStorage (e) {
+    console.log(e.target.dataset.time)
+    var textToSave = $("#text-"+ e.target.dataset.time).val()
+    console.log(textToSave)
 
-  // saveBtnEl.addEventListener('click', saveToLocalStorage());
+    localStorage.setItem("time-"+e.target.dataset.time, textToSave)
+  }
+
+  $(document).on('click', "button", saveToLocalStorage);
 
 
 });
